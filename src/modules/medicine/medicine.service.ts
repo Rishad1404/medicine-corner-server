@@ -29,8 +29,25 @@ const getSingleMedicine= async (id: string) => {
   return result;
 };
 
+const updateMedicine = async (id: string, data: any) => {
+  const result = await prisma.medicine.update({
+    where: { id },
+    data: data,
+  });
+  return result;
+};
+
+const deleteMedicine= async (id: string) => {
+  const result = await prisma.medicine.delete({
+    where: { id },
+  });
+  return result;
+};
+
 export const medicineService={
     createMedicine,
     getAllMedicines,
-    getSingleMedicine
+    getSingleMedicine,
+    updateMedicine,
+    deleteMedicine
 }
