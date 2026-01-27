@@ -43,7 +43,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  role   String? @default("USER")
+  role   String? @default("CUSTOMER")
   phone  String?
   status String? @default("ACTIVE")
 
@@ -55,7 +55,7 @@ model Medicine {
   id           String  @id @default(uuid())
   name         String  @db.VarChar(150)
   description  String? @db.Text
-  price        Decimal @db.Decimal(10, 2)
+  price        Int
   stock        Int
   manufacturer String  @db.VarChar(100)
 
