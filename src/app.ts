@@ -6,6 +6,7 @@ import cors from "cors"
 import { medicineRouter } from "./modules/medicine/medicine.router";
 import { orderRouter } from "./modules/order/order.router";
 import { sellerRouter } from "./modules/seller/seller.router";
+import { adminRouter } from "./modules/admin/admin.router";
 
 
 const app:Application=express();
@@ -22,7 +23,8 @@ app.use(express.json())
 app.use("/api/categories",categoryRouter);
 app.use("/api/medicines",medicineRouter);
 app.use("/api/orders",orderRouter);
-app.use("/api/seller",sellerRouter)
+app.use("/api/seller",sellerRouter);
+app.use("/api/admin",adminRouter)
 
 
 app.get("/",(req,res)=>{
