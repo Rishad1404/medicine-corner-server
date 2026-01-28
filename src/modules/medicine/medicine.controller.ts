@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { medicineService } from "./medicine.service";
+import paginationSortingHelper from "../../helpers/paginationSortingHelper";
 
 
 // Create medicine-------------------------------------------------------------------------
@@ -29,12 +30,12 @@ const createMedicine = async (req: Request, res: Response) => {
 const getAllMedicines = async (req: Request, res: Response) => {
   try {
 
-    const {search,sortBy,sortOrder}=req.query;
+    const {search}=req.query;
     const searchString=typeof search === 'string' ? search : undefined;
-    const sortByString=typeof sortBy === 'string' ? sortBy :'createdAt';
-    const sortOrderString=typeof sortOrder ==='string'? sortOrder : 'desc'
 
-    const result = await medicineService.getAllMedicines({search:searchString, sortBy:sortByString, sortOrder: sortOrderString});
+    const {sortBy,sortOrder,page,limit,skip}=paginationSortingHelper(req.query)
+
+    const result = await medicineService.getAllMedicines({search:searchString, sortBy, sortOrder,page,limit,skip});
     res.status(200).json({
       success: true,
       message: "Medicines fetched successfully",

@@ -11,8 +11,22 @@ const createMedicine = async (data: any, userId: string) => {
   return result;
 };
 
-const getAllMedicines = async ({ search,sortBy,sortOrder }: { search?: string | undefined,sortBy: string ,sortOrder:string}) => {
-  const andConditions:MedicineWhereInput[] = [];
+const getAllMedicines = async ({
+  search,
+  sortBy,
+  sortOrder,
+  page,
+  limit,
+  skip
+}: {
+  search?: string | undefined;
+  sortBy: string;
+  sortOrder: string;
+  page:number,
+  limit:number,
+  skip:number
+}) => {
+  const andConditions: MedicineWhereInput[] = [];
 
   if (search) {
     andConditions.push({
@@ -42,12 +56,15 @@ const getAllMedicines = async ({ search,sortBy,sortOrder }: { search?: string | 
   }
 
   const result = await prisma.medicine.findMany({
+
+    take:limit,
+    skip,
     where: {
-      AND:andConditions
+      AND: andConditions,
     },
-    orderBy:{
-      [sortBy]:sortOrder
-    }
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
   });
   return result;
 };
