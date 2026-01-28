@@ -77,7 +77,7 @@ model Medicine {
 
 model Order {
   id              String      @id @default(uuid())
-  totalAmount     Decimal     @db.Decimal(10, 2)
+  totalAmount     Int
   status          OrderStatus @default(PLACED)
   shippingAddress String      @db.Text
 
