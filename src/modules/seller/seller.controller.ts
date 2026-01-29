@@ -34,7 +34,23 @@ const updateOrderStatus = async (req: Request, res: Response) => {
   }
 };
 
+const getSellerStats = async (req: Request, res: Response) => {
+  try {
+    const sellerId = (req as any).user.id;
+    const result = await sellerService.getSellerStats(sellerId);
+    
+    res.status(200).json({
+      success: true,
+      message: "Seller stats fetched successfully",
+      data: result
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message: "Error fetching stats" });
+  }
+};
+
 export const sellerController= {
   getSellerOrders,
-  updateOrderStatus
+  updateOrderStatus,
+  getSellerStats
 };

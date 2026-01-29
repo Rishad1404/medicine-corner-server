@@ -12,6 +12,7 @@ router.delete("/medicines/:id",auth(UserRole.SELLER),medicineController.deleteMe
 router.get("/orders",auth(UserRole.SELLER),sellerController.getSellerOrders);
 router.patch("/orders/:id",auth(UserRole.SELLER),sellerController.updateOrderStatus);
 
+router.get("/stats",auth(UserRole.SELLER),sellerController.getSellerStats);
 
 
 

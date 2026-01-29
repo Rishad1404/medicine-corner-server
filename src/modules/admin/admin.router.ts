@@ -7,5 +7,6 @@ const router=express.Router();
 
 router.get("/users",auth(UserRole.ADMIN),adminController.getAllUsers)
 router.patch("/users/:id",auth(UserRole.ADMIN),adminController.updateUserStatus)
+router.get("/stats",auth(UserRole.ADMIN),adminController.getStats)
 
 export const adminRouter=router

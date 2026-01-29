@@ -41,7 +41,23 @@ const updateUserStatus = async (req: Request, res: Response) => {
   }
 };
 
+const getStats = async (req: Request, res: Response) => {
+  try {
+    const result = await adminService.getDashboardStats();
+    
+    res.status(200).json({
+      success: true,
+      message: "Dashboard stats fetched successfully",
+      data: result
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message: "Error fetching stats" });
+  }
+};
+
+
 export const adminController={
     getAllUsers,
-    updateUserStatus
+    updateUserStatus,
+    getStats
 }

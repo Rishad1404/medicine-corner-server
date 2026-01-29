@@ -24,8 +24,30 @@ const updateUserStatus= async (userId: string, payload: { role?: UserRole; statu
   return result;
 };
 
+const getDashboardStats=async()=>{
+  const totalUsers=await prisma.user.count();
+  const totalMedicines = await prisma.medicine.count();
+  const totalOrders = await prisma.order.count();
+
+  const revenueData=await prisma.order.aggregate({
+    _sum:{
+      totalAmount:true
+    }
+  })
+
+  const totalRevenue=revenueData._sum.totalAmount || 0 ;
+
+  return {
+    totalUsers,
+    totalMedicines,
+    totalOrders,
+    totalRevenue
+  };
+};
+
 export const adminService={
     getAllUsers,
-    updateUserStatus
+    updateUserStatus,
+    getDashboardStats
 
 }

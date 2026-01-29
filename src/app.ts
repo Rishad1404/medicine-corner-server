@@ -8,6 +8,7 @@ import { orderRouter } from "./modules/order/order.router";
 import { sellerRouter } from "./modules/seller/seller.router";
 import { adminRouter } from "./modules/admin/admin.router";
 import { reviewRouter } from "./modules/review/review.router";
+import errorHandler from "./middlewares/globalErrorHandler";
 
 
 const app:Application=express();
@@ -26,11 +27,13 @@ app.use("/api/medicines",medicineRouter);
 app.use("/api/orders",orderRouter);
 app.use("/api/seller",sellerRouter);
 app.use("/api/admin",adminRouter);
-app.use("/api/reviews",reviewRouter)
+app.use("/api/reviews",reviewRouter);
 
 
 app.get("/",(req,res)=>{
     res.send("Hello World!");
 })
+
+app.use(errorHandler)
 
 export default app;
