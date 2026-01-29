@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { reviewService } from "./review.service";
 
-const addReview = async (req: Request, res: Response) => {
+const addReview = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const customerId = (req as any).user.id;
     const result = await reviewService.createReview(customerId, req.body);
@@ -25,7 +25,7 @@ const addReview = async (req: Request, res: Response) => {
   }
 };
 
-const getMedicineReviews = async (req: Request, res: Response) => {
+const getMedicineReviews = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const { medicineId } = req.params;
     const result = await reviewService.getReviewsForMedicine(medicineId as string);
@@ -36,7 +36,7 @@ const getMedicineReviews = async (req: Request, res: Response) => {
       data: result
     });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: "Error fetching reviews" });
+    next()
   }
 };
 

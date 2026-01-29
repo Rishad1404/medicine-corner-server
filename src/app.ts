@@ -9,6 +9,7 @@ import { sellerRouter } from "./modules/seller/seller.router";
 import { adminRouter } from "./modules/admin/admin.router";
 import { reviewRouter } from "./modules/review/review.router";
 import errorHandler from "./middlewares/globalErrorHandler";
+import { notFound } from "./middlewares/notFound";
 
 
 const app:Application=express();
@@ -34,6 +35,7 @@ app.get("/",(req,res)=>{
     res.send("Hello World!");
 })
 
+app.use(notFound)
 app.use(errorHandler)
 
 export default app;

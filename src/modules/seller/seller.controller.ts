@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { sellerService } from "./seller.service";
 
-const getSellerOrders = async (req: Request, res: Response) => {
+const getSellerOrders = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const sellerId = (req as any).user.id;
     const result = await sellerService.getSellerOrders(sellerId);
@@ -12,12 +12,12 @@ const getSellerOrders = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: "Error fetching orders" });
+    next()
   }
 };
 
 
-const updateOrderStatus = async (req: Request, res: Response) => {
+const updateOrderStatus = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const { id } = req.params;
     const { status } = req.body; 
@@ -30,11 +30,11 @@ const updateOrderStatus = async (req: Request, res: Response) => {
       data: result
     });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: "Error updating status" });
+    next()
   }
 };
 
-const getSellerStats = async (req: Request, res: Response) => {
+const getSellerStats = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const sellerId = (req as any).user.id;
     const result = await sellerService.getSellerStats(sellerId);
@@ -45,7 +45,7 @@ const getSellerStats = async (req: Request, res: Response) => {
       data: result
     });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: "Error fetching stats" });
+    next()
   }
 };
 

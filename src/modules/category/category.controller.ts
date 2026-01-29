@@ -1,19 +1,16 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { categoryService } from "./category.service";
 
-const createCategory=async (req:Request,res:Response)=>{
+const createCategory=async (req:Request,res:Response,next:NextFunction)=>{
     try {
         const result=await categoryService.createCategory(req.body)
         res.status(201).json(result)
     } catch (error) {
-        res.status(400).json({
-            error:"Category Creation Failed",
-            details:error
-        })
+      next()
     }
 }
 
-const getAllCategories = async (req: Request, res: Response) => {
+const getAllCategories = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const result = await categoryService.getAllCategories();
     res.status(200).json({
@@ -22,15 +19,11 @@ const getAllCategories = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch categories",
-      error: err,
-    });
+    next()
   }
 };
 
-const getSingleCategory = async (req: Request, res: Response) => {
+const getSingleCategory = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const { id } = req.params;
     const result = await categoryService.getSingleCategory(id as string);
@@ -50,15 +43,11 @@ const getSingleCategory = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch category",
-      error: err,
-    });
+    next()
   }
 };
 
-const updateCategory = async (req: Request, res: Response) => {
+const updateCategory = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const { id } = req.params;
     const result = await categoryService.updateCategory(id as string, req.body);
@@ -68,11 +57,11 @@ const updateCategory = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Failed to update category", error: err });
+    next()
   }
 };
 
-const deleteCategory = async (req: Request, res: Response) => {
+const deleteCategory = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const { id } = req.params;
     await categoryService.deleteCategory(id as string);
@@ -82,7 +71,7 @@ const deleteCategory = async (req: Request, res: Response) => {
       data: null,
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Failed to delete category", error: err });
+    next()
   }
 };
 

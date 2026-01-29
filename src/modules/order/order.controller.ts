@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { orderService } from "./order.service";
 
-const createOrder = async (req: Request, res: Response) => {
+const createOrder = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const userId = (req as any).user.id;
     const result = await orderService.createOrder(userId, req.body);
@@ -12,12 +12,12 @@ const createOrder = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({ success: false, message: error.message });
+    next()
   }
 };
 
 
-const getMyAllOrders = async (req: Request, res: Response) => {
+const getMyAllOrders = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const userId = (req as any).user.id;
     const result = await orderService.getMyAllOrders(userId);
@@ -28,12 +28,12 @@ const getMyAllOrders = async (req: Request, res: Response) => {
       data: result
     });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: "Error fetching orders" });
+    next()
   }
 };
 
 
-const getSingleOrder = async (req: Request, res: Response) => {
+const getSingleOrder = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const userId = (req as any).user.id;
     const result = await orderService.getSingleOrder(req.params.id as string, userId);
@@ -44,7 +44,7 @@ const getSingleOrder = async (req: Request, res: Response) => {
       data: result
     });
   } catch (err: any) {
-    res.status(404).json({ success: false, message: err.message });
+    next()
   }
 };
 
