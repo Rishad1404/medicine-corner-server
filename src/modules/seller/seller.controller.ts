@@ -7,7 +7,15 @@ const getSellerOrders = async (
   next: NextFunction,
 ) => {
   try {
-    const sellerId = (req as any).user.id;
+    const sellerId = (req as any).user?.id;
+
+    if (!sellerId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized: seller not found",
+      });
+    }
+
     const result = await sellerService.getSellerOrders(sellerId);
 
     res.status(200).json({
@@ -15,12 +23,16 @@ const getSellerOrders = async (
       message: "Seller orders fetched successfully",
       data: result,
     });
-  } catch (err: any) {
-    next();
+  } catch (err) {
+    next(err);
   }
 };
 
-const getSellerMedicines = async (req: Request, res: Response,next:NextFunction) => {
+const getSellerMedicines = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const user = (req as any).user;
 
@@ -31,8 +43,8 @@ const getSellerMedicines = async (req: Request, res: Response,next:NextFunction)
       message: "Seller medicines fetched successfully",
       data: result,
     });
-  } catch (error:any) {
-    next()
+  } catch (error: any) {
+    next();
   }
 };
 

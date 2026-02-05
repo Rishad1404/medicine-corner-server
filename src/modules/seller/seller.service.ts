@@ -22,6 +22,7 @@ const getSellerOrders = async (sellerId: string) => {
         select: {
           name: true,
           email: true,
+          image:true
         },
       },
     },

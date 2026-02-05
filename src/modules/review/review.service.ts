@@ -1,9 +1,9 @@
 import { prisma } from "../../lib/prisma";
 
 interface ReviewPayload {
-    medicineId: string;
-    rating: number;
-    comment: string;
+  medicineId: string;
+  rating: number;
+  comment: string;
 }
 
 const createReview = async (
@@ -15,13 +15,30 @@ const createReview = async (
     throw new Error("Rating must be between 1 and 5");
   }
 
-
-  const medicine = await prisma.medicine.findUnique({
-    where: { id: payload.medicineId },
+  const hasPurchased = await prisma.order.findFirst({
+    where: {
+      customerId: customerId, 
+      status: "DELIVERED",
+      items: {
+        some: {
+          medicineId: payload.medicineId 
+        }
+      }
+    }
   });
 
-  if (!medicine) {
-    throw new Error("Medicine not found");
+  if (!hasPurchased) {
+    throw new Error("You can only review medicines you have purchased and received.");
+  }
+  const existingReview = await prisma.review.findFirst({
+    where: {
+      customerId: customerId,
+      medicineId: payload.medicineId
+    }
+  });
+
+  if (existingReview) {
+    throw new Error("You have already reviewed this medicine.");
   }
 
   const result = await prisma.review.create({
@@ -35,24 +52,22 @@ const createReview = async (
 
   return result;
 };
-
-
 const getReviewsForMedicine = async (medicineId: string) => {
   const result = await prisma.review.findMany({
     where: { medicineId: medicineId },
     include: {
       customer: {
-        select: { 
+        select: {
           name: true,
-        } 
-      }
+        },
+      },
     },
-    orderBy: { createdAt: "desc" }
+    orderBy: { createdAt: "desc" },
   });
   return result;
 };
 
-export const reviewService={
-    createReview,
-    getReviewsForMedicine
-}
+export const reviewService = {
+  createReview,
+  getReviewsForMedicine,
+};

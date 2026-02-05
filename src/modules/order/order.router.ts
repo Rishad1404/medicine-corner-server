@@ -7,7 +7,7 @@ import { sellerController } from "../seller/seller.controller";
 const router=express.Router();
 
 
-router.post("/",auth(UserRole.CUSTOMER),orderController.createOrder);
+router.post("/",auth(UserRole.CUSTOMER,UserRole.SELLER),orderController.createOrder);
 router.get("/",auth(UserRole.CUSTOMER),orderController.getMyAllOrders);
 router.get("/:id",auth(UserRole.CUSTOMER),orderController.getSingleOrder);
 
